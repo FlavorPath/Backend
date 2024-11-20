@@ -1,17 +1,13 @@
 const express = require('express');
-const cors = require('cors');
 const dotenv = require('dotenv');
+const bodyParser = require('body-parser');
+const userRoutes = require('./routes/user.routes');
 
 dotenv.config();
 
 const app = express();
 
-app.use(cors());
-app.use(express.json());
-
-// Example routes
-app.get('/', (req, res) => {
-    res.send('API is running...');
-});
+app.use(bodyParser.json());
+app.use('/users', userRoutes);
 
 module.exports = app;

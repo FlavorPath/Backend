@@ -1,6 +1,6 @@
 const mariadb = require('mysql2');
 const dotenv = require('dotenv');
-dotenv.config();
+dotenv.config({path : '../.env'});
 // RDS 연결 설정
 const connection = mariadb.createConnection({
     host: process.env.DATABASE_ENDPOINT, // RDS 엔드포인트

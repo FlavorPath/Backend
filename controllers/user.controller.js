@@ -45,3 +45,43 @@ exports.registerUser = async (req, res) => {
     }
 };
 
+// 로그인 컨트롤러
+exports.loginUser = async (req, res) => {
+    const { username, password } = req.body;
+
+    // 필드 확인
+    if (!username || !password) {
+        return res.status(400).json({ success: false, message: 'ID와 비밀번호를 입력해주세요.' });
+    }
+
+    try {
+        // 사용자 조회
+        const [result] = await db.execute('SELECT * FROM users WHERE username = ?', [username]);
+        const user = Array.isArray(result) && result.length > 0 ? result[0] : null;
+
+        if (!user) {
+            return res.status(404).json({ success: false, message: '존재하지 않는 사용자입니다.' });
+        }
+
+        // 비밀번호 확인
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+            return res.status(401).json({ success: false, message: '비밀번호가 일치하지 않습니다.' });
+        }
+
+        // JWT 생성
+        const token = jwt.sign({ id: user.id, username: user.username }, process.env.JWT_SECRET, {
+            expiresIn: '1h',
+        });
+
+        // 응답
+        res.status(200).json({
+            success: true,
+            message: '로그인 성공',
+            token,
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false, message: '서버 오류가 발생했습니다.' });
+    }
+};

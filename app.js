@@ -1,11 +1,17 @@
 const express = require('express');
+const cors = require('cors');
+const dotenv = require('dotenv');
+
+dotenv.config();
+
 const app = express();
+
+app.use(cors());
 app.use(express.json());
 
+// Example routes
 app.get('/', (req, res) => {
-    res.send('Hello World');
+    res.send('API is running...');
 });
 
-app.listen(7777, () => {
-    console.log('Server is running on port 7777');
-});
+module.exports = app;

@@ -15,7 +15,7 @@ exports.getRestaurantDetail = async (req, res) => {
     sql = `SELECT name, price FROM menus WHERE restaurant_id=${id}`;
     const [menuInfo] = await db.execute(sql);
 
-    const token = req.headers.authorization;
+    const token = req.headers.authorization?.split(" ")[1];
     let scrap = false;
 
     // 스크랩 여부 조회

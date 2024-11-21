@@ -10,6 +10,6 @@ const app = express();
 
 app.use(bodyParser.json());
 app.use("/user", userRoutes);
-app.use("/home", homeRoutes);
+app.use("/home/markers", homeRoutes);
 
 module.exports = app;

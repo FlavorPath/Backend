@@ -5,10 +5,11 @@ const jwt = require("jsonwebtoken");
 exports.getRestaurantDetail = async (req, res) => {
   try {
     const { id } = req.params;
-    let sql = `SELECT name, category, address, hours, phone FROM restaurants WHERE id=${id}`;
+    let sql = `SELECT id, name, category, address, hours, phone FROM restaurants WHERE id=${id}`;
     // 이름 라벨 주소 영업시간 전화번호 데이터 조회
     const [restaurantInfo] = await db.execute(sql);
-    let { name, category, address, hours, phone } = restaurantInfo[0];
+    const { name, category, address, hours, phone } = restaurantInfo[0];
+    const restaurantId = restaurantInfo[0].id;
 
     // 메뉴 데이터 조회
     sql = `SELECT name, price FROM menus WHERE restaurant_id=${id}`;
@@ -30,6 +31,7 @@ exports.getRestaurantDetail = async (req, res) => {
 
     // 전달 양식
     const detail = {
+      restaurantId,
       name,
       category,
       menu: menuInfo,
@@ -46,5 +48,3 @@ exports.getRestaurantDetail = async (req, res) => {
     });
   }
 };
-
-// 메뉴 스크랩여부

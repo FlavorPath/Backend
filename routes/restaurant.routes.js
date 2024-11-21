@@ -1,10 +1,11 @@
 const express = require("express");
 const router = express.Router();
+const { getRestaurantDetail } = require("../controllers/restaurant.controller");
 
 // 식상 상세 화면 API
 
-// 식상 상세 조회
-router.get("/:id");
+// 식당 상세 조회
+router.get("/:id", getRestaurantDetail);
 
 // 식당 리뷰 조회
 router.get("/:id/reviews");

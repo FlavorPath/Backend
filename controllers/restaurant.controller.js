@@ -44,7 +44,32 @@ exports.getRestaurantDetail = async (req, res) => {
   } catch (err) {
     res.status(404).json({
       success: false,
-      message: "찾을 수 없습니다.",
+      message: "식당을 찾을 수 없습니다.",
+    });
+  }
+};
+
+// 식당 리뷰 조회 컨트롤러
+exports.getRestaurantReviews = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    // 예외처리를 위해 식당이 존재하는지 확인
+    let sql = `SELECT COUNT(*) AS exist FROM restaurants WHERE id = ${id}`;
+    const [restaurant] = await db.execute(sql);
+    if (!restaurant[0].exist) throw Error;
+
+    // 리뷰아이디, 유저네임, 리뷰내용, 작성일자 조회
+    // reviews 테이블의 user_id 값을 통해 users 테이블에서 username을 얻어오기 위해 JOIN 사용
+    sql = `SELECT reviews.id, users.username, reviews.content, reviews.created_at FROM reviews 
+  JOIN users ON reviews.user_id = users.id AND reviews.restaurant_id = ${id}`;
+
+    const [reviews] = await db.execute(sql);
+    res.status(200).json(reviews);
+  } catch (err) {
+    res.status(404).json({
+      success: false,
+      message: "식당을 찾을 수 없습니다.",
     });
   }
 };

@@ -94,3 +94,20 @@ exports.loginUser = async (req, res) => {
         res.status(500).json({ success: false, message: '서버 오류가 발생했습니다.' });
     }
 };
+
+// 사용자 정보 조회 컨트롤러
+exports.getUserInfo = async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const [rows] = await db.execute('SELECT nickname, profile_icon AS icon, tag FROM users WHERE id = ?', [userId]);
+
+        if (rows.length === 0) {
+            return res.status(404).json({ success: false, message: '사용자를 찾을 수 없습니다.' });
+        }
+
+        res.status(200).json({ success: true, data: rows[0] });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false, message: '서버 오류가 발생했습니다.' });
+    }
+};

@@ -4,6 +4,7 @@ const {
   getRestaurantDetail,
   getRestaurantReviews,
   postRestaurantReview,
+  toggleScrap,
 } = require("../controllers/restaurant.controller");
 
 const authMiddleware = require("../middlewares/authMiddleware");
@@ -20,6 +21,6 @@ router.get("/:id/reviews", getRestaurantReviews);
 router.post("/:id/reviews", authMiddleware, postRestaurantReview);
 
 // 식당 스크랩 추가/해제
-router.post("/:id/scrap");
+router.post("/:id/scrap", authMiddleware, toggleScrap);
 
 module.exports = router;

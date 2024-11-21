@@ -12,7 +12,8 @@ exports.getRestaurantDetail = async (req, res) => {
     const restaurantId = restaurantInfo[0].id;
 
     // 메뉴 데이터 조회
-    sql = `SELECT name, price FROM menus WHERE restaurant_id=${id}`;
+    sql = `SELECT menus.name, menus.price, menu_photos.photo_url AS image FROM menus 
+    LEFT JOIN menu_photos ON menus.id = menu_photos.menu_id WHERE restaurant_id=${id}`;
     const [menuInfo] = await db.execute(sql);
 
     const token = req.headers.authorization?.split(" ")[1];

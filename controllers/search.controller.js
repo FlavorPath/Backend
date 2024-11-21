@@ -18,9 +18,8 @@ exports.searchRestaurants = async (req, res) => {
                     r.name, 
                     r.address, 
                     GROUP_CONCAT(l.name) AS labels,
-                    (SELECT mp.photo_url 
+                    (SELECT m.photo_url 
                      FROM menus m 
-                     JOIN menu_photos mp ON m.id = mp.menu_id 
                      WHERE m.restaurant_id = r.id 
                      ORDER BY m.id ASC LIMIT 1) AS photo_url
                 FROM restaurants r
@@ -40,9 +39,8 @@ exports.searchRestaurants = async (req, res) => {
                     r.name, 
                     r.address, 
                     GROUP_CONCAT(l.name) AS labels,
-                    (SELECT mp.photo_url 
+                    (SELECT m.photo_url 
                      FROM menus m 
-                     JOIN menu_photos mp ON m.id = mp.menu_id 
                      WHERE m.restaurant_id = r.id 
                      ORDER BY m.id ASC LIMIT 1) AS photo_url
                 FROM restaurants r

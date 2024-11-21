@@ -3,7 +3,10 @@ const router = express.Router();
 const {
   getRestaurantDetail,
   getRestaurantReviews,
+  postRestaurantReview,
 } = require("../controllers/restaurant.controller");
+
+const authMiddleware = require("../middlewares/authMiddleware");
 
 // 식상 상세 화면 API
 
@@ -14,7 +17,7 @@ router.get("/:id", getRestaurantDetail);
 router.get("/:id/reviews", getRestaurantReviews);
 
 // 식당 리뷰 작성
-router.post("/:id/reviews");
+router.post("/:id/reviews", authMiddleware, postRestaurantReview);
 
 // 식당 스크랩 추가/해제
 router.post("/:id/scrap");

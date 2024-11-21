@@ -5,8 +5,14 @@ const jwt = require('jsonwebtoken');
 exports.registerUser = async (req, res) => {
     const { username, password, nickname } = req.body;
 
-    if (!username || !password || !nickname) {
-        return res.status(400).json({ success: false, message: '모든 필드를 입력해주세요.' });
+    if (!username) {
+        return res.status(400).json({ success: false, message: '아이디를 입력해주세요!' });
+    }
+    if (!password) {
+        return res.status(400).json({ success: false, message: '비밀번호를 입력해주세요!' });
+    }
+    if (!nickname) {
+        return res.status(400).json({ success: false, message: '닉네임을 입력해주세요!' });
     }
 
     try {
@@ -48,10 +54,13 @@ exports.registerUser = async (req, res) => {
 // 로그인 컨트롤러
 exports.loginUser = async (req, res) => {
     const { username, password } = req.body;
-
+    
     // 필드 확인
-    if (!username || !password) {
-        return res.status(400).json({ success: false, message: 'ID와 비밀번호를 입력해주세요.' });
+    if (!username) {
+        return res.status(400).json({ success: false, message: '아이디를 입력해주세요!' });
+    }
+    if (!password) {
+        return res.status(400).json({ success: false, message: '비밀번호를 입력해주세요!' });
     }
 
     try {

@@ -1,6 +1,9 @@
 const express = require("express");
 const router = express.Router();
-const { getRestaurantDetail } = require("../controllers/restaurant.controller");
+const {
+  getRestaurantDetail,
+  getRestaurantReviews,
+} = require("../controllers/restaurant.controller");
 
 // 식상 상세 화면 API
 
@@ -8,7 +11,7 @@ const { getRestaurantDetail } = require("../controllers/restaurant.controller");
 router.get("/:id", getRestaurantDetail);
 
 // 식당 리뷰 조회
-router.get("/:id/reviews");
+router.get("/:id/reviews", getRestaurantReviews);
 
 // 식당 리뷰 작성
 router.post("/:id/reviews");

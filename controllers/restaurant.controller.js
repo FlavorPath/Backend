@@ -73,3 +73,22 @@ exports.getRestaurantReviews = async (req, res) => {
     });
   }
 };
+
+// 식당 리뷰 작성 컨트롤러
+exports.postRestaurantReview = async (req, res) => {
+  try {
+    const restaurantId = req.params.id;
+    const userId = req.user.id;
+    const { content } = req.body;
+
+    const sql = `INSERT INTO reviews (user_id, restaurant_id, content) VALUES (?, ?, ?)`;
+    const values = [userId, restaurantId, content];
+
+    const [result] = await db.execute(sql, values);
+    res.status(201).json({
+      success: true,
+    });
+  } catch (err) {
+    res.status(400).json({ success: false, message: "잘못된 요청입니다." });
+  }
+};

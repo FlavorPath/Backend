@@ -92,3 +92,29 @@ exports.postRestaurantReview = async (req, res) => {
     res.status(400).json({ success: false, message: "잘못된 요청입니다." });
   }
 };
+
+exports.toggleScrap = async (req, res) => {
+  try {
+    const restaurantId = req.params.id;
+    const userId = req.user.id;
+
+    // 스크랩 여부 조회
+    let sql = `SELECT COUNT(*) AS exist FROM scraps WHERE user_id=? AND restaurant_id=?`;
+    const values = [userId, restaurantId];
+    const [scrap] = await db.execute(sql, values);
+
+    // 스크랩 여부에 따라 SQL문 변경
+    if (scrap[0].exist) {
+      sql = `DELETE FROM scraps WHERE user_id=? AND restaurant_id=?`;
+    } else {
+      sql = `INSERT INTO scraps (user_id, restaurant_id) VALUES (?, ?)`;
+    }
+
+    const [result] = await db.execute(sql, values);
+    res.status(201).json({
+      success: true,
+    });
+  } catch (err) {
+    res.status(400).json({ success: false, message: "잘못된 요청입니다." });
+  }
+};

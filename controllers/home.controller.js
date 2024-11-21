@@ -17,10 +17,10 @@ exports.getAllMarkers = async (req, res) => {
 
 exports.getLabelMarkers = async (req, res) => {
   try {
-    const { label } = req.params;
+    const { label } = req.query;
     const sql = `SELECT id,name,category, 
   JSON_OBJECT('latitude', latitude, 'longitude', longitude) AS location 
-  from restaurants WHERE category=${label}`;
+  from restaurants WHERE category="${label}"`;
 
     const [result] = await db.execute(sql);
     res.status(200).json(result);

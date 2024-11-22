@@ -5,11 +5,18 @@ const userRoutes = require("./routes/user.routes");
 const homeRoutes = require("./routes/home.routes");
 const restaurantRoutes = require("./routes/restaurant.routes");
 const searchRoutes = require("./routes/search.routes");
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocs = require('./swagger'); // Swagger 설정 파일
 const cors = require('cors');
 
 dotenv.config();
 
 const app = express();
+
+// Swagger UI 라우트 추가
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+
+console.log('Swagger UI available at http://localhost:7777/api-docs');
 
 // CORS 설정
 const corsOptions = {

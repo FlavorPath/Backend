@@ -1,5 +1,6 @@
 const db = require("../utils/db");
 
+// 스크랩 목록 조회 컨트롤러
 exports.getScraps = async (req, res) => {
   try {
     // 레스토랑아이디, 이름, 라벨

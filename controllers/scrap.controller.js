@@ -28,7 +28,7 @@ exports.getScraps = async (req, res) => {
     }
     res.status(200).json(restaurantWithLabels);
   } catch (err) {
-    res.json({ succes: false, message: "잘못된 요청입니다." });
+    res.status(400).json({ succes: false, message: "잘못된 요청입니다." });
   }
 };
 

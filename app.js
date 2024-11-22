@@ -28,7 +28,7 @@ app.use(cors(corsOptions));
 
 app.use(bodyParser.json());
 app.use("/user", userRoutes);
-app.use("/home/markers", homeRoutes);
+app.use("/home", homeRoutes);
 app.use("/restaurant", restaurantRoutes);
 app.use("/search", searchRoutes);
 

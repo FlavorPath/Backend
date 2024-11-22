@@ -286,6 +286,79 @@ router.get("/:id/reviews", getRestaurantReviews);
 // 식당 리뷰 작성
 router.post("/:id/reviews", authMiddleware, postRestaurantReview);
 
+/**
+ * @swagger
+ * /restaurant/{id}/scrap:
+ *   post:
+ *     summary: 식당 스크랩 추가/해제
+ *     description: 특정 식당을 스크랩하거나, 이미 스크랩된 경우 스크랩을 해제합니다. 인증이 필요합니다.
+ *     tags:
+ *       - Scrap
+ *     security:
+ *       - bearerAuth: []  # 인증 필요
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: 스크랩할 식당의 ID
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       201:
+ *         description: 성공적으로 스크랩 추가 또는 해제
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 message:
+ *                   type: string
+ *                   example: 스크랩이 추가되었습니다.
+ *       404:
+ *         description: 요청한 식당을 찾을 수 없음
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: 스크랩할 식당을 찾을 수 없습니다.
+ *       401:
+ *         description: 인증 실패 (유효하지 않은 또는 누락된 토큰)
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: 인증이 필요합니다.
+ *       500:
+ *         description: 서버 오류
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: 서버 오류가 발생했습니다.
+ */
+
+
 // 식당 스크랩 추가/해제
 router.post("/:id/scrap", authMiddleware, toggleScrap);
 

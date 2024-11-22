@@ -31,3 +31,19 @@ exports.getScraps = async (req, res) => {
     res.json({ succes: false, message: "잘못된 요청입니다." });
   }
 };
+
+// 스크랩 해제 컨트롤러
+exports.deleteScap = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const { restaurantId } = req.body;
+    const sql = `DELETE FROM scraps WHERE user_id = ${userId} AND restaurant_id = ${restaurantId}`;
+    const [result] = await db.execute(sql);
+
+    // affectedRows에 따라 예외처리
+    if (result.affectedRows) res.status(200).json({ succes: true });
+    else throw Error;
+  } catch (err) {
+    res.status(400).json({ succes: false, messagae: "잘못된 요청입니다." });
+  }
+};

@@ -106,6 +106,93 @@ const authMiddleware = require("../middlewares/authMiddleware");
 // 식당 상세 조회
 router.get("/:id", getRestaurantDetail);
 
+/**
+ * @swagger
+ * /restaurant/{id}/reviews:
+ *   get:
+ *     summary: "특정 식당의 리뷰 조회"
+ *     description: "특정 식당의 리뷰를 커서 기반 페이징 방식으로 조회합니다."
+ *     tags:
+ *       - Restaurants
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         description: "식당 ID"
+ *         required: true
+ *         schema:
+ *           type: integer
+ *       - name: cursor
+ *         in: query
+ *         description: "현재 페이지의 커서. 기본값은 0."
+ *         required: false
+ *         schema:
+ *           type: integer
+ *       - name: limit
+ *         in: query
+ *         description: "한 번에 가져올 데이터 수. 기본값은 5."
+ *         required: false
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: "리뷰 조회 성공"
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 reviews:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       id:
+ *                         type: integer
+ *                         example: 1
+ *                       username:
+ *                         type: string
+ *                         example: "john_doe"
+ *                       content:
+ *                         type: string
+ *                         example: "맛있어요!"
+ *                       created_at:
+ *                         type: string
+ *                         format: date-time
+ *                         example: "2024-11-22T14:20:15.000Z"
+ *                 lastCursor:
+ *                   type: integer
+ *                   example: 5
+ *       404:
+ *         description: "식당을 찾을 수 없습니다."
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: "식당을 찾을 수 없습니다."
+ *       500:
+ *         description: "서버 오류가 발생했습니다."
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: "서버 오류가 발생했습니다."
+ */
+
 // 식당 리뷰 조회
 router.get("/:id/reviews", getRestaurantReviews);
 

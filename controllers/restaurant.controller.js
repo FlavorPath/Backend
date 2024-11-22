@@ -181,11 +181,22 @@ exports.postRestaurantReview = async (req, res) => {
 };
 
 
-
+// 스크랩 컨트롤러
 exports.toggleScrap = async (req, res) => {
   try {
     const restaurantId = req.params.id;
     const userId = req.user.id;
+
+    // 식당 존재 여부 확인
+    const sqlCheckRestaurant = `SELECT COUNT(*) AS exist FROM restaurants WHERE id = ?`;
+    const [restaurant] = await db.execute(sqlCheckRestaurant, [restaurantId]);
+
+    if (!restaurant[0].exist) {
+      return res.status(404).json({
+        success: false,
+        message: "스크랩할 식당을 찾을 수 없습니다.",
+      });
+    }
 
     // 스크랩 여부 조회
     let sql = `SELECT COUNT(*) AS exist FROM scraps WHERE user_id=? AND restaurant_id=?`;
@@ -199,11 +210,20 @@ exports.toggleScrap = async (req, res) => {
       sql = `INSERT INTO scraps (user_id, restaurant_id) VALUES (?, ?)`;
     }
 
-    const [result] = await db.execute(sql, values);
+    await db.execute(sql, values);
+
     res.status(201).json({
       success: true,
+      message: scrap[0].exist
+          ? "스크랩이 해제되었습니다."
+          : "스크랩이 추가되었습니다.",
     });
   } catch (err) {
-    res.status(400).json({ success: false, message: "잘못된 요청입니다." });
+    console.error(err);
+    res.status(500).json({
+      success: false,
+      message: "서버 오류가 발생했습니다.",
+    });
   }
 };
+

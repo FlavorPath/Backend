@@ -168,5 +168,5 @@ router.post('/login', loginUser);
  */
 
 // 회원 정보 조회
-router.get('/', authMiddleware, getUserInfo);
+router.get('/info', authMiddleware, getUserInfo);
 module.exports = router;

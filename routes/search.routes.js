@@ -68,7 +68,7 @@ const router = express.Router();
  *                         type: array
  *                         items:
  *                           type: string
- *                         example: ["한식", "라면"]
+ *                         example: ["한식", "국밥"]
  *                       photo_url:
  *                         type: string
  *                         example: "https://example.com/photo.jpg"

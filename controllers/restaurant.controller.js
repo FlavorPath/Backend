@@ -86,27 +86,51 @@ exports.getRestaurantReviews = async (req, res) => {
     let { cursor = 0, limit = 5 } = req.query;
     cursor = +cursor;
     limit = +limit;
-    // 예외처리를 위해 식당이 존재하는지 확인
-    let sql = `SELECT COUNT(*) AS exist FROM restaurants WHERE id = ${id}`;
-    const [restaurant] = await db.execute(sql);
-    if (!restaurant[0].exist) throw Error;
 
-    // 리뷰아이디, 유저네임, 리뷰내용, 작성일자 조회
-    // reviews 테이블의 user_id 값을 통해 users 테이블에서 username을 얻어오기 위해 JOIN 사용
-    sql = `SELECT reviews.id, users.username, reviews.content, reviews.created_at FROM reviews 
-  JOIN users ON reviews.user_id = users.id WHERE reviews.restaurant_id = ? AND reviews.id > ?
-  ORDER BY reviews.id ASC LIMIT ?;`;
+    // 예외처리를 위해 식당이 존재하는지 확인
+    let sql = `SELECT COUNT(*) AS exist FROM restaurants WHERE id = ?`;
+    const [restaurant] = await db.execute(sql, [id]);
+
+    if (!restaurant[0].exist) {
+      // 식당이 없을 경우 404 응답
+      return res.status(404).json({
+        success: false,
+        message: "식당을 찾을 수 없습니다.",
+      });
+    }
+
+    // 리뷰 조회
+    sql = `SELECT reviews.id, users.username, reviews.content, reviews.created_at 
+           FROM reviews 
+           JOIN users ON reviews.user_id = users.id 
+           WHERE reviews.restaurant_id = ? AND reviews.id > ?
+           ORDER BY reviews.id ASC 
+           LIMIT ?;`;
     const params = [id, cursor, limit];
     const [reviews] = await db.query(sql, params);
 
+    if (reviews.length === 0) {
+      // 리뷰가 없을 경우 200 응답
+      return res.status(200).json({
+        success: true,
+        reviews: [],
+        lastCursor: null,
+      });
+    }
+
     const lastCursor = reviews[reviews.length - 1].id;
 
-    res.status(200).json({ reviews, lastCursor });
+    res.status(200).json({
+      success: true,
+      reviews,
+      lastCursor,
+    });
   } catch (err) {
-    res.status(404).json({
-      err,
-      // success: false,
-      // message: "식당을 찾을 수 없습니다.",
+    // 서버 오류 발생 시 500 응답
+    console.error(err);
+    res.status(500).json({
+      success: false,
+      message: "서버 오류가 발생했습니다.",
     });
   }
 };

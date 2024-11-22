@@ -142,17 +142,45 @@ exports.postRestaurantReview = async (req, res) => {
     const userId = req.user.id;
     const { content } = req.body;
 
-    const sql = `INSERT INTO reviews (user_id, restaurant_id, content) VALUES (?, ?, ?)`;
+    // 요청 데이터 유효성 검사
+    if (!content || content.trim() === "") {
+      return res.status(400).json({
+        success: false,
+        message: "리뷰 내용을 입력해주세요.",
+      });
+    }
+
+    // 식당 존재 여부 확인
+    const sqlCheckRestaurant = `SELECT COUNT(*) AS exist FROM restaurants WHERE id = ?`;
+    const [restaurant] = await db.execute(sqlCheckRestaurant, [restaurantId]);
+
+    if (!restaurant[0].exist) {
+      return res.status(404).json({
+        success: false,
+        message: "리뷰를 작성할 식당을 찾을 수 없습니다.",
+      });
+    }
+
+    // 리뷰 삽입
+    const sqlInsertReview = `INSERT INTO reviews (user_id, restaurant_id, content) VALUES (?, ?, ?)`;
     const values = [userId, restaurantId, content];
 
-    const [result] = await db.execute(sql, values);
+    await db.execute(sqlInsertReview, values);
+
     res.status(201).json({
       success: true,
+      message: "리뷰가 성공적으로 작성되었습니다.",
     });
   } catch (err) {
-    res.status(400).json({ success: false, message: "잘못된 요청입니다." });
+    console.error(err);
+    res.status(500).json({
+      success: false,
+      message: "서버 오류가 발생했습니다.",
+    });
   }
 };
+
+
 
 exports.toggleScrap = async (req, res) => {
   try {

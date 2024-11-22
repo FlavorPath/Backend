@@ -196,6 +196,93 @@ router.get("/:id", getRestaurantDetail);
 // 식당 리뷰 조회
 router.get("/:id/reviews", getRestaurantReviews);
 
+/**
+ * @swagger
+ * /restaurant/{id}/reviews:
+ *   post:
+ *     summary: "특정 식당에 리뷰 작성"
+ *     description: "특정 식당에 대한 리뷰를 작성합니다."
+ *     tags:
+ *       - Restaurants
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         description: "리뷰를 작성할 식당 ID"
+ *         required: true
+ *         schema:
+ *           type: integer
+ *       - name: Authorization
+ *         in: header
+ *         description: "JWT 토큰 (Bearer 방식)"
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               content:
+ *                 type: string
+ *                 description: "리뷰 내용"
+ *                 example: "맛있어요! 또 가고 싶어요."
+ *     responses:
+ *       201:
+ *         description: "리뷰 작성 성공"
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 message:
+ *                   type: string
+ *                   example: "리뷰가 성공적으로 작성되었습니다."
+ *       400:
+ *         description: "잘못된 요청 (유효하지 않은 데이터)"
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: "리뷰 내용을 입력해주세요."
+ *       404:
+ *         description: "식당을 찾을 수 없음"
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: "리뷰를 작성할 식당을 찾을 수 없습니다."
+ *       500:
+ *         description: "서버 오류"
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: "서버 오류가 발생했습니다."
+ */
+
 // 식당 리뷰 작성
 router.post("/:id/reviews", authMiddleware, postRestaurantReview);
 

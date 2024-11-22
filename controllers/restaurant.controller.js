@@ -5,36 +5,46 @@ const jwt = require("jsonwebtoken");
 exports.getRestaurantDetail = async (req, res) => {
   try {
     const { id } = req.params;
-    let sql = `SELECT id, name, category, address, hours, phone FROM restaurants WHERE id=${id}`;
-    // 이름 라벨 주소 영업시간 전화번호 데이터 조회
+    // 아아디 식당명 주소 영업시간 전화번호 조회
+    let sql = `SELECT id, name, address, hours, phone FROM restaurants WHERE id=${id}`;
     const [restaurantInfo] = await db.execute(sql);
-    const { name, category, address, hours, phone } = restaurantInfo[0];
+    const { name, address, hours, phone } = restaurantInfo[0];
     const restaurantId = restaurantInfo[0].id;
 
+    // 라벨 조회
+    sql = `SELECT l.name FROM restaurant_labels rl JOIN labels l ON rl.label_id = l.id
+    WHERE rl.restaurant_id = ${id}`;
+    const [result] = await db.execute(sql);
+    const labels = [];
+    result.forEach((label) => labels.push(label.name));
+
     // 메뉴 데이터 조회
-    sql = `SELECT menus.name, menus.price, menu_photos.photo_url AS image FROM menus 
-    LEFT JOIN menu_photos ON menus.id = menu_photos.menu_id WHERE restaurant_id=${id}`;
+    sql = `SELECT name, price, photo_url FROM menus WHERE restaurant_id = ${id}`;
     const [menuInfo] = await db.execute(sql);
 
+    // 스크랩 여부 조회
     const token = req.headers.authorization?.split(" ")[1];
     let scrap = false;
-
-    // 스크랩 여부 조회
     if (token) {
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
-      const userId = decoded.id;
+      try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const userId = decoded.id;
 
-      // 스크랩 여부 확인 후 스크랩 시 값 true로 조정
-      sql = `SELECT EXISTS (SELECT 1 FROM scraps WHERE user_id=${userId} AND restaurant_id=${id}) AS scraped`;
-      [result] = await db.execute(sql);
-      if (result[0].scraped) scrap = true;
+        // 스크랩 여부 확인 후 스크랩 시 값 true로 조정
+        sql = `SELECT EXISTS (SELECT 1 FROM scraps WHERE user_id=${userId} AND restaurant_id=${id}) AS scraped`;
+        let [result] = await db.execute(sql);
+        if (result[0].scraped) scrap = true;
+      } catch (err) {
+        // 토큰 에러 시 스크랩 여부 false로 유지
+        scrap = false;
+      }
     }
 
     // 전달 양식
     const detail = {
       restaurantId,
       name,
-      category,
+      labels,
       menu: menuInfo,
       address,
       hours,

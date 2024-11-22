@@ -5,22 +5,35 @@ const jwt = require("jsonwebtoken");
 exports.getRestaurantDetail = async (req, res) => {
   try {
     const { id } = req.params;
-    // 아아디 식당명 주소 영업시간 전화번호 조회
-    let sql = `SELECT id, name, address, hours, phone FROM restaurants WHERE id=${id}`;
-    const [restaurantInfo] = await db.execute(sql);
+
+    // 식당 정보 조회
+    let sql = `SELECT id, name, address, hours, phone FROM restaurants WHERE id = ?`;
+    const [restaurantInfo] = await db.execute(sql, [id]);
+
+    if (restaurantInfo.length === 0) {
+      // 식당이 존재하지 않을 경우
+      return res.status(404).json({
+        success: false,
+        message: "식당을 찾을 수 없습니다.",
+      });
+    }
+
     const { name, address, hours, phone } = restaurantInfo[0];
     const restaurantId = restaurantInfo[0].id;
 
     // 라벨 조회
-    sql = `SELECT l.name FROM restaurant_labels rl JOIN labels l ON rl.label_id = l.id
-    WHERE rl.restaurant_id = ${id}`;
-    const [result] = await db.execute(sql);
-    const labels = [];
-    result.forEach((label) => labels.push(label.name));
+    sql = `SELECT l.name 
+           FROM restaurant_labels rl 
+           JOIN labels l ON rl.label_id = l.id 
+           WHERE rl.restaurant_id = ?`;
+    const [result] = await db.execute(sql, [id]);
+    const labels = result.map((label) => label.name);
 
     // 메뉴 데이터 조회
-    sql = `SELECT name, price, photo_url FROM menus WHERE restaurant_id = ${id}`;
-    const [menuInfo] = await db.execute(sql);
+    sql = `SELECT name, price, photo_url 
+           FROM menus 
+           WHERE restaurant_id = ?`;
+    const [menuInfo] = await db.execute(sql, [id]);
 
     // 스크랩 여부 조회
     const token = req.headers.authorization?.split(" ")[1];
@@ -30,17 +43,20 @@ exports.getRestaurantDetail = async (req, res) => {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         const userId = decoded.id;
 
-        // 스크랩 여부 확인 후 스크랩 시 값 true로 조정
-        sql = `SELECT EXISTS (SELECT 1 FROM scraps WHERE user_id=${userId} AND restaurant_id=${id}) AS scraped`;
-        let [result] = await db.execute(sql);
-        if (result[0].scraped) scrap = true;
+        // 스크랩 여부 확인
+        sql = `SELECT EXISTS (SELECT 1 
+                              FROM scraps 
+                              WHERE user_id = ? AND restaurant_id = ?) AS scraped`;
+        const [scrapResult] = await db.execute(sql, [userId, id]);
+        if (scrapResult[0].scraped) scrap = true;
       } catch (err) {
-        // 토큰 에러 시 스크랩 여부 false로 유지
+        // 토큰 검증 오류 처리
+        console.error("토큰 검증 오류:", err.message);
         scrap = false;
       }
     }
 
-    // 전달 양식
+    // 응답 데이터
     const detail = {
       restaurantId,
       name,
@@ -51,11 +67,14 @@ exports.getRestaurantDetail = async (req, res) => {
       phone,
       isScraped: scrap,
     };
+
     res.status(200).json(detail);
   } catch (err) {
-    res.status(404).json({
+    // 서버 오류 처리
+    console.error("서버 오류 발생:", err.message);
+    res.status(500).json({
       success: false,
-      message: "식당을 찾을 수 없습니다.",
+      message: "서버 오류가 발생했습니다.",
     });
   }
 };

@@ -14,45 +14,45 @@ exports.searchRestaurants = async (req, res) => {
         if (toggle === 'name') {
             // 식당 이름으로 검색
             sql = `
-                SELECT 
-                    r.id, 
-                    r.name, 
-                    r.address, 
+                SELECT
+                    r.id,
+                    r.name,
+                    r.address,
                     GROUP_CONCAT(l.name) AS labels, -- 식당에 연결된 모든 라벨을 쉼표로 연결하여 반환
-                    (SELECT m.photo_url 
-                     FROM menus m 
-                     WHERE m.restaurant_id = r.id 
+                    (SELECT m.photo_url
+                     FROM menus m
+                     WHERE m.restaurant_id = r.id
                      ORDER BY m.id ASC LIMIT 1) AS photo_url -- 해당 식당의 첫 번째 메뉴 사진 URL을 반환
                 FROM restaurants r
-                LEFT JOIN restaurant_labels rl ON r.id = rl.restaurant_id -- restaurant_labels 테이블과 LEFT JOIN
-                LEFT JOIN labels l ON rl.label_id = l.id -- labels 테이블과 LEFT JOIN
+                         LEFT JOIN restaurant_labels rl ON r.id = rl.restaurant_id -- restaurant_labels 테이블과 LEFT JOIN
+                         LEFT JOIN labels l ON rl.label_id = l.id -- labels 테이블과 LEFT JOIN
                 WHERE r.name LIKE ? AND r.id > ? -- 이름에 키워드가 포함되고, 커서 이후 ID인 레코드만 조회
                 GROUP BY r.id -- 식당 ID로 그룹화
                 ORDER BY r.id ASC -- 식당 ID 기준 오름차순 정렬
                 LIMIT ?; -- 지정된 데이터 수만큼 제한
             `;
-            params = [`%${query}%`, cursor, parseInt(limit)]; // SQL에 사용할 매개변수 설정
+            params = [`%${query}%`, cursor, limit]; // SQL에 사용할 매개변수 설정
         } else if (toggle === 'label') {
             // 라벨로 검색
             sql = `
-                SELECT 
-                    r.id, 
-                    r.name, 
-                    r.address, 
+                SELECT
+                    r.id,
+                    r.name,
+                    r.address,
                     GROUP_CONCAT(l.name) AS labels, -- 식당에 연결된 모든 라벨을 쉼표로 연결하여 반환
-                    (SELECT m.photo_url 
-                     FROM menus m 
-                     WHERE m.restaurant_id = r.id 
+                    (SELECT m.photo_url
+                     FROM menus m
+                     WHERE m.restaurant_id = r.id
                      ORDER BY m.id ASC LIMIT 1) AS photo_url -- 해당 식당의 첫 번째 메뉴 사진 URL을 반환
                 FROM restaurants r
-                JOIN restaurant_labels rl ON r.id = rl.restaurant_id -- restaurant_labels 테이블과 JOIN
-                JOIN labels l ON rl.label_id = l.id -- labels 테이블과 JOIN
+                         JOIN restaurant_labels rl ON r.id = rl.restaurant_id -- restaurant_labels 테이블과 JOIN
+                         JOIN labels l ON rl.label_id = l.id -- labels 테이블과 JOIN
                 WHERE l.name LIKE ? AND r.id > ? -- 라벨 이름에 키워드가 포함되고, 커서 이후 ID인 레코드만 조회
                 GROUP BY r.id -- 식당 ID로 그룹화
                 ORDER BY r.id ASC -- 식당 ID 기준 오름차순 정렬
                 LIMIT ?; -- 지정된 데이터 수만큼 제한
             `;
-            params = [`%${query}%`, cursor, parseInt(limit)]; // SQL에 사용할 매개변수 설정
+            params = [`%${query}%`, cursor, limit]; // SQL에 사용할 매개변수 설정
         } else {
             // 유효하지 않은 toggle 값일 경우 400 Bad Request 응답 반환
             return res.status(400).json({ success: false, message: '유효하지 않은 검색 기준입니다.' });

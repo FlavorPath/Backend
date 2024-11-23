@@ -18,6 +18,21 @@ const swaggerOptions = {
                 description: 'Production Server',
             },
         ],
+        components: {
+            securitySchemes: {
+                bearerAuth: {
+                    type: 'http',
+                    scheme: 'bearer',
+                    bearerFormat: 'JWT',
+                    description: 'JWT 인증이 필요합니다. 토큰을 입력하세요.',
+                },
+            },
+        },
+        security: [
+            {
+                bearerAuth: [], // 인증을 모든 API에 적용하려면 이 섹션 추가
+            },
+        ],
     },
     apis: ['./routes/*.js'], // API 경로에서 주석을 스캔
 };

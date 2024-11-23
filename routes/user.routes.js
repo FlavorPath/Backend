@@ -173,9 +173,9 @@ router.post("/login", loginUser);
  */
 
 // 회원 정보 조회
-router.get("/", authMiddleware, getUserInfo);
+router.get("/info", authMiddleware, getUserInfo);
 
-// 닉네임 변경
+// 회원 닉네임 변경
 router.put("/nickname", authMiddleware, changeNickname);
 
 module.exports = router;

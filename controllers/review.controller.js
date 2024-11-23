@@ -62,7 +62,9 @@ exports.changeReview = async (req, res) => {
     // result.info의 Changed 요소로 변경 여부 확인
     const isChanged = Number(result.info.split(/\s+/)[4]);
     if (isChanged) {
-      res.status(200).json({ success: true });
+      const date = new Date();
+      const updatedAt = date.toLocaleDateString("en-CA");
+      res.status(200).json({ success: true, updatedAt });
     }
     // 변경값이 없을 시 예외처리
     else

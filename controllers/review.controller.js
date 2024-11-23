@@ -3,16 +3,23 @@ const db = require("../utils/db");
 exports.getAllReviews = async (req, res) => {
   try {
     const userId = req.user.id;
+    let { cursor = 0, limit = 5 } = req.query;
+    cursor = +cursor;
+    limit = +limit;
 
-    const sql = `SELECT id, restaurant_id, content, created_at FROM reviews WHERE user_id = ${userId}`;
-    const [reviews] = await db.execute(sql);
+    const sql = `SELECT id, restaurant_id, content, created_at FROM reviews WHERE user_id = ?
+    AND id > ? ORDER BY id ASC LIMIT ?`;
+    const params = [userId, cursor, limit];
+    const [reviews] = await db.query(sql, params);
 
     if (!reviews.length) {
       return res
         .status(404)
         .json({ success: false, message: "작성된 리뷰가 없습니다." });
     }
-    res.status(200).json(reviews);
+
+    const lastCursor = reviews[reviews.length - 1].id;
+    res.status(202).json({ reviews, lastCursor });
   } catch (err) {
     res
       .status(500)

@@ -100,7 +100,7 @@ exports.getRestaurantReviews = async (req, res) => {
     }
 
     // 리뷰 조회
-    sql = `SELECT reviews.id, users.username, reviews.content, reviews.created_at 
+    sql = `SELECT reviews.id, users.nickname, reviews.content, reviews.created_at 
            FROM reviews 
            JOIN users ON reviews.user_id = users.id 
            WHERE reviews.restaurant_id = ? AND reviews.id > ?
@@ -180,7 +180,6 @@ exports.postRestaurantReview = async (req, res) => {
   }
 };
 
-
 // 스크랩 컨트롤러
 exports.toggleScrap = async (req, res) => {
   try {
@@ -215,8 +214,8 @@ exports.toggleScrap = async (req, res) => {
     res.status(201).json({
       success: true,
       message: scrap[0].exist
-          ? "스크랩이 해제되었습니다."
-          : "스크랩이 추가되었습니다.",
+        ? "스크랩이 해제되었습니다."
+        : "스크랩이 추가되었습니다.",
     });
   } catch (err) {
     console.error(err);
@@ -226,4 +225,3 @@ exports.toggleScrap = async (req, res) => {
     });
   }
 };
-

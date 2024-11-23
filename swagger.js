@@ -10,7 +10,7 @@ const swaggerOptions = {
         },
         servers: [
             {
-                url: 'http://43.202.172.0:7777',
+                url: 'http://43.202.172.0:1234',
                 description: 'Production Server',
             },
             {

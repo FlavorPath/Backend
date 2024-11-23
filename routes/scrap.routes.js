@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const authMiddleware = require("../middlewares/authMiddleware");
-const { getScraps, deleteScap } = require("../controllers/scrap.controller");
+const { getScraps, deleteScrap } = require("../controllers/scrap.controller");
 
 /**
  * @swagger
@@ -107,7 +107,7 @@ router.get("/", authMiddleware, getScraps);
 /**
  * @swagger
  * /scrap:
- *   delete:
+ *   post:
  *     summary: 스크랩 해제
  *     description: 로그인한 사용자가 특정 식당의 스크랩을 해제합니다.
  *     tags:
@@ -193,7 +193,8 @@ router.get("/", authMiddleware, getScraps);
  *                   example: "서버 오류가 발생했습니다."
  */
 
+
 // 스크랩 해제
-router.post("/", authMiddleware, deleteScap);
+router.post("/", authMiddleware, deleteScrap);
 
 module.exports = router;

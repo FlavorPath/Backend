@@ -6,6 +6,7 @@ const homeRoutes = require("./routes/home.routes");
 const restaurantRoutes = require("./routes/restaurant.routes");
 const searchRoutes = require("./routes/search.routes");
 const scrapRouter = require("./routes/scrap.routes");
+const reviewRoutes = require("./routes/review.routes");
 const swaggerUi = require("swagger-ui-express");
 const swaggerDocs = require("./swagger"); // Swagger 설정 파일
 const cors = require("cors");
@@ -33,5 +34,6 @@ app.use("/home", homeRoutes);
 app.use("/restaurant", restaurantRoutes);
 app.use("/search", searchRoutes);
 app.use("/scrap", scrapRouter);
+app.use("/user/review", reviewRoutes);
 
 module.exports = app;

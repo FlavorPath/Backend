@@ -1,6 +1,11 @@
-const express = require('express');
-const { registerUser, loginUser, getUserInfo } = require('../controllers/user.controller');
-const authMiddleware = require('../middlewares/authMiddleware');
+const express = require("express");
+const {
+  registerUser,
+  loginUser,
+  getUserInfo,
+  changeNickname,
+} = require("../controllers/user.controller");
+const authMiddleware = require("../middlewares/authMiddleware");
 const router = express.Router();
 
 /**
@@ -59,7 +64,7 @@ const router = express.Router();
  *         description: 서버 오류
  */
 // 회원가입
-router.post('/register', registerUser);
+router.post("/register", registerUser);
 
 /**
  * @swagger
@@ -105,7 +110,7 @@ router.post('/register', registerUser);
  *         description: 서버 오류
  */
 // 로그인
-router.post('/login', loginUser);
+router.post("/login", loginUser);
 
 /**
  * @swagger
@@ -168,5 +173,9 @@ router.post('/login', loginUser);
  */
 
 // 회원 정보 조회
-router.get('/info', authMiddleware, getUserInfo);
+router.get("/info", authMiddleware, getUserInfo);
+
+// 회원 닉네임 변경
+router.put("/nickname", authMiddleware, changeNickname);
+
 module.exports = router;

@@ -10,32 +10,32 @@ const swaggerOptions = {
         },
         servers: [
             {
-                url: 'http://localhost:7777', // 로컬 개발 서버 URL
-                description: 'Local Server',
+                url: 'http://43.202.172.0:7777',
+                description: 'Production Server',
             },
             {
-                url: 'http://43.202.172.0:7777/', // 배포 서버 URL
-                description: 'Production Server',
+                url: 'http://localhost:7777',
+                description: 'Local Server',
             },
         ],
         components: {
             securitySchemes: {
-                bearerAuth: {
+                BearerAuth: {
                     type: 'http',
                     scheme: 'bearer',
                     bearerFormat: 'JWT',
-                    description: 'JWT 인증이 필요합니다. 토큰을 입력하세요.',
                 },
             },
         },
         security: [
             {
-                bearerAuth: [], // 인증을 모든 API에 적용하려면 이 섹션 추가
+                BearerAuth: [],
             },
         ],
     },
-    apis: ['./routes/*.js'], // API 경로에서 주석을 스캔
+    apis: ['./routes/*.js'], // API 주석 경로
 };
+
 
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
 

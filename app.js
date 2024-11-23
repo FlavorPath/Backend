@@ -18,7 +18,7 @@ const app = express();
 // Swagger UI 라우트 추가
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
-console.log("Swagger UI available at http://localhost:7777/api-docs");
+console.log("Swagger UI available at http://localhost:1234/api-docs");
 
 // CORS 설정
 const corsOptions = {

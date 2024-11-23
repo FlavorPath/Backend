@@ -152,7 +152,7 @@ router.get("/:id", getRestaurantDetail);
  *                       id:
  *                         type: integer
  *                         example: 1
- *                       username:
+ *                       nickname:
  *                         type: string
  *                         example: "john_doe"
  *                       content:

@@ -137,13 +137,13 @@ router.post("/login", loginUser);
  *                   properties:
  *                     nickname:
  *                       type: string
- *                       example: "홍길동"
+ *                       example: "testNickname"
  *                     icon:
  *                       type: string
- *                       example: "https://example.com/profile.jpg"
+ *                       example: null
  *                     tag:
  *                       type: string
- *                       example: "#01"
+ *                       example: "#07"
  *       404:
  *         description: 사용자를 찾을 수 없음
  *         content:

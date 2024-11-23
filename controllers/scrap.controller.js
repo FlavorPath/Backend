@@ -66,18 +66,38 @@ exports.getScraps = async (req, res) => {
   }
 };
 
-// 스크랩 해제 컨트롤러
-exports.deleteScap = async (req, res) => {
+exports.deleteScrap = async (req, res) => {
   try {
     const userId = req.user.id;
     const { restaurantId } = req.body;
-    const sql = `DELETE FROM scraps WHERE user_id = ${userId} AND restaurant_id = ${restaurantId}`;
-    const [result] = await db.execute(sql);
 
-    // affectedRows에 따라 예외처리
-    if (result.affectedRows) res.status(200).json({ succes: true });
-    else throw Error;
+    if (!restaurantId) {
+      return res.status(400).json({
+        success: false,
+        message: "레스토랑 ID가 필요합니다.",
+      });
+    }
+
+    const sql = `DELETE FROM scraps WHERE user_id = ? AND restaurant_id = ?`;
+    const values = [userId, restaurantId];
+    const [result] = await db.execute(sql, values);
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "스크랩이 존재하지 않거나 이미 해제되었습니다.",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "스크랩이 성공적으로 해제되었습니다.",
+    });
   } catch (err) {
-    res.status(400).json({ succes: false, messagae: "잘못된 요청입니다." });
+    console.error(err);
+    res.status(500).json({
+      success: false,
+      message: "서버 오류가 발생했습니다.",
+    });
   }
 };

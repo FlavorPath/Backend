@@ -24,7 +24,7 @@ const swaggerOptions = {
                     type: 'http',
                     scheme: 'bearer',
                     bearerFormat: 'JWT',
-                    description: 'JWT 인증이 필요합니다. Bearer <your_token> 형식으로 입력하세요.',
+                    description: 'JWT 인증이 필요합니다. 토큰을 입력하세요.',
                 },
             },
         },

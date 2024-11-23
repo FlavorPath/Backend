@@ -40,3 +40,38 @@ exports.getReview = async (req, res) => {
       .json({ success: false, message: "서버 오류가 발생했습니다" });
   }
 };
+
+// 리뷰 수정하기
+exports.changeReview = async (req, res) => {
+  try {
+    const { content } = req.body;
+    const { id } = req.params;
+
+    // 입력값이 빈칸일 시 예외처리
+    if (!content || !content.trim()) {
+      return res
+        .status(400)
+        .json({ success: false, message: "리뷰를 작성해주세요" });
+    }
+
+    const sql = `UPDATE reviews SET content=? WHERE id=?`;
+    const params = [content, id];
+
+    const [result] = await db.execute(sql, params);
+
+    // result.info의 Changed 요소로 변경 여부 확인
+    const isChanged = Number(result.info.split(/\s+/)[4]);
+    if (isChanged) {
+      res.status(200).json({ success: true });
+    }
+    // 변경값이 없을 시 예외처리
+    else
+      res
+        .status(400)
+        .json({ success: false, message: "기존 리뷰와 동일합니다" });
+  } catch (err) {
+    res
+      .status(500)
+      .json({ success: false, message: "서버 오류가 발생했습니다" });
+  }
+};

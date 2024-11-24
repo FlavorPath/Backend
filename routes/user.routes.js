@@ -5,8 +5,10 @@ const {
   getUserInfo,
   changeNickname,
 } = require("../controllers/user.controller");
-const authMiddleware = require("../middlewares/authMiddleware");
 const router = express.Router();
+const { updateProfileIcon } = require('../controllers/user.controller');
+const authMiddleware = require('../middlewares/authMiddleware');
+const upload = require('../middlewares/uploadMiddleware');
 
 /**
  * @swagger
@@ -236,4 +238,86 @@ router.get("/info", authMiddleware, getUserInfo);
 // 회원 닉네임 변경
 router.put("/nickname", authMiddleware, changeNickname);
 
+
+/**
+ * @swagger
+ * /user/profile-icon:
+ *   put:
+ *     summary: "유저 프로필 아이콘 수정"
+ *     description: "S3에 이미지를 업로드하고 유저의 프로필 아이콘을 수정합니다."
+ *     tags:
+ *       - Users
+ *     security:
+ *       - bearerAuth: [] # JWT 인증 추가
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               profileIcon:
+ *                 type: string
+ *                 format: binary
+ *                 description: "업로드할 프로필 이미지 파일"
+ *     responses:
+ *       200:
+ *         description: "프로필 아이콘 수정 성공"
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 message:
+ *                   type: string
+ *                   example: "프로필 아이콘이 성공적으로 업데이트되었습니다."
+ *                 profileIcon:
+ *                   type: string
+ *                   description: "업데이트된 프로필 아이콘 URL"
+ *                   example: "https://example-bucket.s3.amazonaws.com/profile-icons/icon.png"
+ *       400:
+ *         description: "잘못된 요청 (파일 없음)"
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: "파일이 제공되지 않았습니다."
+ *       404:
+ *         description: "유저를 찾을 수 없음"
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: "유저를 찾을 수 없습니다."
+ *       500:
+ *         description: "서버 오류"
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: "서버 오류가 발생했습니다."
+ */
+// 프로필 아이콘 업데이트
+router.put('/profile-icon', authMiddleware, upload, updateProfileIcon);
 module.exports = router;

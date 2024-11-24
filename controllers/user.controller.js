@@ -159,26 +159,42 @@ exports.changeNickname = async (req, res) => {
     // 닉네임 입력값이 없을 시 예외처리
     if (!nickname) {
       return res
-        .status(400)
-        .json({ success: false, message: "변경할 닉네임을 입력해주세요" });
+          .status(400)
+          .json({ success: false, message: "변경할 닉네임을 입력해주세요" });
     }
 
     const [pastUserData] = await db.execute(
-      `SELECT nickname FROM users WHERE id=${id}`
+        `SELECT nickname FROM users WHERE id=?`,
+        [id]
     );
+
     // 현재 닉네임과 동일한 닉네임을 입력했을 시 예외처리
-    if (pastUserData[0].nickname == nickname) {
+    if (pastUserData.length && pastUserData[0].nickname === nickname) {
       return res
-        .status(400)
-        .json({ success: false, message: "동일한 닉네임 입니다." });
+          .status(400)
+          .json({ success: false, message: "동일한 닉네임 입니다." });
     }
 
     const sql = `UPDATE users SET nickname=? WHERE id=?`;
     const params = [nickname, id];
 
     const [result] = await db.execute(sql, params);
-    res.status(200).json({ success: true });
+
+    // 업데이트 성공 여부 확인
+    if (result.affectedRows === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "사용자를 찾을 수 없습니다.",
+      });
+    }
+
+    res.status(200).json({ success: true, message: "닉네임이 변경되었습니다." });
   } catch (err) {
-    res.status(400).json({ success: false, message: "잘못된 요청입니다." });
+    console.error(err);
+    res.status(500).json({
+      success: false,
+      message: "서버 오류가 발생했습니다.",
+    });
   }
 };
+

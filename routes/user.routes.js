@@ -175,6 +175,64 @@ router.post("/login", loginUser);
 // 회원 정보 조회
 router.get("/info", authMiddleware, getUserInfo);
 
+/**
+ * @swagger
+ * /user/nickname:
+ *   put:
+ *     summary: 회원 닉네임 변경
+ *     tags:
+ *       - Users
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               nickname:
+ *                 type: string
+ *                 description: 변경할 닉네임
+ *                 example: "새로운닉네임"
+ *     responses:
+ *       200:
+ *         description: 닉네임 변경 성공
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *       400:
+ *         description: 닉네임 변경 실패 (입력값 검증 실패 또는 동일한 닉네임)
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: "변경할 닉네임을 입력해주세요"
+ *       500:
+ *         description: 서버 오류
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: "서버 오류가 발생했습니다."
+ */
 // 회원 닉네임 변경
 router.put("/nickname", authMiddleware, changeNickname);
 

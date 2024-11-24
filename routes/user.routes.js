@@ -5,8 +5,10 @@ const {
   getUserInfo,
   changeNickname,
 } = require("../controllers/user.controller");
-const authMiddleware = require("../middlewares/authMiddleware");
 const router = express.Router();
+const { updateProfileIcon } = require('../controllers/user.controller');
+const authMiddleware = require('../middlewares/authMiddleware');
+const upload = require('../middlewares/uploadMiddleware');
 
 /**
  * @swagger
@@ -236,4 +238,7 @@ router.get("/info", authMiddleware, getUserInfo);
 // 회원 닉네임 변경
 router.put("/nickname", authMiddleware, changeNickname);
 
+
+// 프로필 아이콘 업데이트
+router.put('/profile-icon', authMiddleware, upload, updateProfileIcon);
 module.exports = router;

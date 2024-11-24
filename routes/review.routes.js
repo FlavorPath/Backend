@@ -156,6 +156,76 @@ router.get("/", authMiddleware, getAllReviews);
 // 기존 리뷰 불러오기
 router.get("/:id", authMiddleware, getReview);
 
+/**
+ * @swagger
+ * /user/review/{id}:
+ *   put:
+ *     summary: 리뷰 수정하기
+ *     tags:
+ *       - User Reviews
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: 리뷰 ID
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               content:
+ *                 type: string
+ *                 description: 수정할 리뷰 내용
+ *                 example: "수정된 리뷰 내용"
+ *     responses:
+ *       200:
+ *         description: 리뷰 수정 성공
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 updatedAt:
+ *                   type: string
+ *                   format: date
+ *                   description: 리뷰가 수정된 날짜
+ *                   example: "2024-11-24"
+ *       400:
+ *         description: 리뷰 수정 실패 (입력값 검증 실패 또는 동일한 내용)
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: "리뷰를 작성해주세요"
+ *       500:
+ *         description: 서버 오류
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: "서버 오류가 발생했습니다"
+ */
 // 리뷰 수정하기
 router.put("/:id", authMiddleware, changeReview);
 

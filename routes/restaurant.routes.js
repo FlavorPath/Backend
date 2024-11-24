@@ -115,24 +115,26 @@ router.get("/:id", getRestaurantDetail);
  *     tags:
  *       - Restaurants
  *     parameters:
- *       - name: id
- *         in: path
- *         description: "식당 ID"
+ *       - in: path
+ *         name: id
  *         required: true
  *         schema:
  *           type: integer
- *       - name: cursor
- *         in: query
- *         description: "현재 페이지의 커서. 기본값은 0."
+ *         description: 조회할 식당의 ID
+ *       - in: query
+ *         name: cursor
  *         required: false
  *         schema:
  *           type: integer
- *       - name: limit
- *         in: query
- *         description: "한 번에 가져올 데이터 수. 기본값은 5."
+ *           default: 0
+ *         description: 커서 기반 페이징을 위한 마지막 리뷰 ID (기본값: 0)
+ *       - in: query
+ *         name: limit
  *         required: false
  *         schema:
  *           type: integer
+ *           default: 5
+ *         description: 한 번에 가져올 리뷰의 개수 (기본값: 5)
  *     responses:
  *       200:
  *         description: "리뷰 조회 성공"
@@ -151,22 +153,33 @@ router.get("/:id", getRestaurantDetail);
  *                     properties:
  *                       id:
  *                         type: integer
+ *                         description: 리뷰 ID
  *                         example: 1
  *                       nickname:
  *                         type: string
- *                         example: "john_doe"
+ *                         description: 리뷰를 작성한 유저의 닉네임
+ *                         example: "example_nickname"
+ *                       profileIcon:
+ *                         type: string
+ *                         nullable: true
+ *                         description: 리뷰를 작성한 유저의 프로필 아이콘 URL
+ *                         example: "https://example.com/icon1.png"
  *                       content:
  *                         type: string
- *                         example: "맛있어요!"
- *                       created_at:
+ *                         description: 리뷰 내용
+ *                         example: "음식이 정말 맛있었어요!"
+ *                       createdAt:
  *                         type: string
  *                         format: date-time
- *                         example: "2024-11-22T14:20:15.000Z"
+ *                         description: 리뷰 작성 시간
+ *                         example: "2024-11-24T12:34:56.000Z"
  *                 lastCursor:
  *                   type: integer
+ *                   nullable: true
+ *                   description: 다음 요청에 사용할 마지막 리뷰의 ID
  *                   example: 5
  *       404:
- *         description: "식당을 찾을 수 없습니다."
+ *         description: "식당을 찾을 수 없음"
  *         content:
  *           application/json:
  *             schema:
@@ -179,7 +192,7 @@ router.get("/:id", getRestaurantDetail);
  *                   type: string
  *                   example: "식당을 찾을 수 없습니다."
  *       500:
- *         description: "서버 오류가 발생했습니다."
+ *         description: "서버 오류"
  *         content:
  *           application/json:
  *             schema:

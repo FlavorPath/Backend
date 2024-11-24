@@ -4,9 +4,9 @@ const db = require("../utils/db");
 exports.getScraps = async (req, res) => {
   try {
     const userId = req.user.id;
-    let { cursor = 0, limit = 5 } = req.query;
+    let { cursor = 0 } = req.query;
+    const limit = 10;
     cursor = +cursor;
-    limit = +limit;
 
     // 스크랩 목록 조회
     const sql = `
@@ -48,9 +48,9 @@ exports.getScraps = async (req, res) => {
 
     // 다음 요청에 사용할 커서
     const lastCursor =
-        restaurantWithLabels.length > 0
-            ? restaurantWithLabels[restaurantWithLabels.length - 1].id
-            : null;
+      restaurantWithLabels.length > 0
+        ? restaurantWithLabels[restaurantWithLabels.length - 1].id
+        : null;
 
     res.status(200).json({
       success: true,

@@ -89,6 +89,70 @@ const {
 // 유저가 작성한 모든 리뷰 불러오기
 router.get("/", authMiddleware, getAllReviews);
 
+/**
+ * @swagger
+ * /user/review/{id}:
+ *   get:
+ *     summary: 특정 리뷰 불러오기
+ *     tags:
+ *       - User Reviews
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: 리뷰 ID
+ *     responses:
+ *       200:
+ *         description: 특정 리뷰 조회 성공
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: integer
+ *                   description: 리뷰 ID
+ *                 restaurant_id:
+ *                   type: integer
+ *                   description: 리뷰가 작성된 식당 ID
+ *                 content:
+ *                   type: string
+ *                   description: 리뷰 내용
+ *                 created_at:
+ *                   type: string
+ *                   format: date-time
+ *                   description: 리뷰 작성 날짜
+ *       404:
+ *         description: 리뷰를 찾을 수 없음
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: 리뷰를 찾을 수 없습니다.
+ *       500:
+ *         description: 서버 오류
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: 서버 오류가 발생했습니다.
+ */
 // 기존 리뷰 불러오기
 router.get("/:id", authMiddleware, getReview);
 

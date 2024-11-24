@@ -83,9 +83,9 @@ exports.getRestaurantDetail = async (req, res) => {
 exports.getRestaurantReviews = async (req, res) => {
   try {
     const { id } = req.params;
-    let { cursor = 0, limit = 5 } = req.query;
+    let { cursor = 0 } = req.query;
+    const limit = 10;
     cursor = +cursor;
-    limit = +limit;
 
     // 예외처리를 위해 식당이 존재하는지 확인
     let sql = `SELECT COUNT(*) AS exist FROM restaurants WHERE id = ?`;
@@ -147,7 +147,6 @@ exports.getRestaurantReviews = async (req, res) => {
     });
   }
 };
-
 
 // 식당 리뷰 작성 컨트롤러
 exports.postRestaurantReview = async (req, res) => {

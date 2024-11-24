@@ -3,9 +3,9 @@ const db = require("../utils/db");
 exports.getAllReviews = async (req, res) => {
   try {
     const userId = req.user.id;
-    let { cursor = 0, limit = 5 } = req.query;
+    let { cursor = 0 } = req.query;
+    const limit = 10;
     cursor = +cursor;
-    limit = +limit;
 
     const sql = `SELECT id, restaurant_id, content, created_at FROM reviews WHERE user_id = ?
     AND id > ? ORDER BY id ASC LIMIT ?`;

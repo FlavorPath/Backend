@@ -1,6 +1,7 @@
 const bcrypt = require("bcrypt");
 const db = require("../utils/db");
 const jwt = require("jsonwebtoken");
+const { uploadToS3 } = require('../utils/s3');
 
 exports.registerUser = async (req, res) => {
   const { username, password, nickname } = req.body;
@@ -198,3 +199,37 @@ exports.changeNickname = async (req, res) => {
   }
 };
 
+// 아이콘 수정
+exports.updateProfileIcon = async (req, res) => {
+  try {
+    const userId = req.user.id; // 인증 미들웨어에서 추출
+    const file = req.file; // multer가 처리한 파일
+
+    if (!file) {
+      return res.status(400).json({ success: false, message: '파일이 제공되지 않았습니다.' });
+    }
+
+    // S3에 파일 업로드
+    const profileIconUrl = await uploadToS3(file);
+
+    // DB에 저장
+    const sql = `UPDATE users SET profile_icon = ? WHERE id = ?`;
+    const params = [profileIconUrl, userId];
+    const [result] = await db.execute(sql, params);
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ success: false, message: '유저를 찾을 수 없습니다.' });
+    }
+    console.log(req.file); // 업로드된 파일 데이터
+    console.log(req.body); // 요청 Body 데이터
+
+    res.status(200).json({
+      success: true,
+      message: '프로필 아이콘이 성공적으로 업데이트되었습니다.',
+      profileIcon: profileIconUrl,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, message: '서버 오류가 발생했습니다.' });
+  }
+};

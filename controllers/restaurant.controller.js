@@ -100,12 +100,19 @@ exports.getRestaurantReviews = async (req, res) => {
     }
 
     // 리뷰 조회
-    sql = `SELECT reviews.id, users.nickname, reviews.content, reviews.created_at 
-           FROM reviews 
-           JOIN users ON reviews.user_id = users.id 
-           WHERE reviews.restaurant_id = ? AND reviews.id > ?
-           ORDER BY reviews.id ASC 
-           LIMIT ?;`;
+    sql = `
+      SELECT 
+        reviews.id, 
+        users.nickname, 
+        users.profile_icon AS profileIcon, -- 유저 프로필 아이콘 추가
+        reviews.content, 
+        reviews.created_at 
+      FROM reviews 
+      JOIN users ON reviews.user_id = users.id 
+      WHERE reviews.restaurant_id = ? AND reviews.id > ?
+      ORDER BY reviews.id ASC 
+      LIMIT ?;
+    `;
     const params = [id, cursor, limit];
     const [reviews] = await db.query(sql, params);
 
@@ -122,7 +129,13 @@ exports.getRestaurantReviews = async (req, res) => {
 
     res.status(200).json({
       success: true,
-      reviews,
+      reviews: reviews.map((review) => ({
+        id: review.id,
+        nickname: review.nickname,
+        profileIcon: review.profileIcon, // 응답에 프로필 아이콘 포함
+        content: review.content,
+        createdAt: review.created_at,
+      })),
       lastCursor,
     });
   } catch (err) {
@@ -134,6 +147,7 @@ exports.getRestaurantReviews = async (req, res) => {
     });
   }
 };
+
 
 // 식당 리뷰 작성 컨트롤러
 exports.postRestaurantReview = async (req, res) => {

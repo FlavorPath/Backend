@@ -127,17 +127,17 @@ router.get("/:id", getRestaurantDetail);
  *         schema:
  *           type: integer
  *           default: 0
- *         description: 커서 기반 페이징을 위한 마지막 리뷰 ID (기본값: 0)
+ *         description: "커서 기반 페이징을 위한 마지막 리뷰 ID (기본값: 0)"
  *       - in: query
  *         name: limit
  *         required: false
  *         schema:
  *           type: integer
  *           default: 5
- *         description: 한 번에 가져올 리뷰의 개수 (기본값: 5)
+ *         description: "한 번에 가져올 리뷰의 개수 (기본값: 5)"
  *     responses:
- *       200:
- *         description: "리뷰 조회 성공"
+ *       '200':
+ *         description: 리뷰 조회 성공
  *         content:
  *           application/json:
  *             schema:
@@ -178,8 +178,8 @@ router.get("/:id", getRestaurantDetail);
  *                   nullable: true
  *                   description: 다음 요청에 사용할 마지막 리뷰의 ID
  *                   example: 5
- *       404:
- *         description: "식당을 찾을 수 없음"
+ *       '404':
+ *         description: 식당을 찾을 수 없음
  *         content:
  *           application/json:
  *             schema:
@@ -191,8 +191,8 @@ router.get("/:id", getRestaurantDetail);
  *                 message:
  *                   type: string
  *                   example: "식당을 찾을 수 없습니다."
- *       500:
- *         description: "서버 오류"
+ *       '500':
+ *         description: 서버 오류
  *         content:
  *           application/json:
  *             schema:

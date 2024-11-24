@@ -229,6 +229,60 @@ router.get("/:id", authMiddleware, getReview);
 // 리뷰 수정하기
 router.put("/:id", authMiddleware, changeReview);
 
+/**
+ * @swagger
+ * /user/review/{id}:
+ *   delete:
+ *     summary: 리뷰 삭제하기
+ *     tags:
+ *       - User Reviews
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: 리뷰 ID
+ *     responses:
+ *       200:
+ *         description: 리뷰 삭제 성공
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *       404:
+ *         description: 리뷰를 찾을 수 없음
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: "리뷰를 찾을 수 없습니다."
+ *       500:
+ *         description: 서버 오류
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: "서버 오류가 발생했습니다"
+ */
 // 리뷰 삭제하기
 router.delete("/:id", authMiddleware, deleteReview);
 

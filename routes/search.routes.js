@@ -21,7 +21,7 @@ const router = express.Router();
  *       - in: query
  *         name: query
  *         required: true
- *         description: 검색 키워드. "name"일 경우 식당 이름을 입력, "label"일 경우 라벨 이름을 입력.
+ *         description: 검색 키워드. "name"일 경우 식당 이름을 입력, "label"일 경우 라벨 이름을 입력. (URL-encoded 문자열 가능)
  *         schema:
  *           type: string
  *           example: "청진옥"

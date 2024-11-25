@@ -22,11 +22,14 @@ console.log("Swagger UI available at http://localhost:1234/api-docs");
 
 // CORS 설정
 const corsOptions = {
-  origin: "*",
+  origin: "http://localhost:5173", // 프론트엔드의 정확한 도메인을 지정
   methods: ["GET", "POST", "PUT", "DELETE"], // 허용할 HTTP 메서드
   allowedHeaders: ["Content-Type", "Authorization"], // 허용할 헤더
+  credentials: true, // 프론트엔드에서 쿠키, 인증 정보를 사용할 수 있도록 허용
 };
+
 app.use(cors(corsOptions));
+
 
 app.use(bodyParser.json());
 app.use("/user", userRoutes);

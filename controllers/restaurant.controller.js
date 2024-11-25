@@ -29,6 +29,14 @@ exports.getRestaurantDetail = async (req, res) => {
     const [result] = await db.execute(sql, [id]);
     const labels = result.map((label) => label.name);
 
+    // 음식점 이미지 조회
+    sql = `SELECT photo_url AS images FROM menus WHERE restaurant_id = ?`;
+    const [imagesData] = await db.execute(sql, [id]);
+    const images = [];
+    for (let img of imagesData) {
+      images.push(img.images);
+    }
+
     // 메뉴 데이터 조회
     sql = `SELECT name, price, photo_url 
            FROM menus 
@@ -61,6 +69,7 @@ exports.getRestaurantDetail = async (req, res) => {
       restaurantId,
       name,
       labels,
+      images,
       menu: menuInfo,
       address,
       hours,

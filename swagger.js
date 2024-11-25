@@ -20,18 +20,18 @@ const swaggerOptions = {
         ],
         components: {
             securitySchemes: {
-                BearerAuth: {
+                bearerAuth: {
                     type: 'http',
                     scheme: 'bearer',
                     bearerFormat: 'JWT',
                 },
             },
-        },
-        security: [
-            {
-                BearerAuth: [],
-            },
-        ],
+            security: [
+                {
+                    bearerAuth: [],
+                },
+            ],
+        }
     },
     apis: ['./routes/*.js'], // API 주석 경로
 };

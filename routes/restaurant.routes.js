@@ -26,12 +26,6 @@ const authMiddleware = require("../middlewares/authMiddleware");
  *         description: 조회할 식당의 고유 ID
  *         schema:
  *           type: integer
- *       - in: header
- *         name: Authorization
- *         required: false
- *         description: 사용자의 JWT 토큰 (스크랩 여부 확인용)
- *         schema:
- *           type: string
  *     responses:
  *       200:
  *         description: 식당 상세 정보 반환 성공
@@ -224,12 +218,6 @@ router.get("/:id/reviews", getRestaurantReviews);
  *         required: true
  *         schema:
  *           type: integer
- *       - name: Authorization
- *         in: header
- *         description: "JWT 토큰 (Bearer 방식)"
- *         required: true
- *         schema:
- *           type: string
  *     requestBody:
  *       required: true
  *       content:

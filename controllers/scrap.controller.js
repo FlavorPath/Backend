@@ -24,9 +24,10 @@ exports.getScraps = async (req, res) => {
     const [restaurants] = await db.query(sql, params);
 
     if (restaurants.length === 0) {
-      return res.status(404).json({
-        success: false,
-        message: "스크랩된 식당을 찾을 수 없습니다.",
+      return res.status(200).json({
+        success: true,
+        data: [],
+        lastCursor: null,
       });
     }
 

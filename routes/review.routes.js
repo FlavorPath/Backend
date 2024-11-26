@@ -24,12 +24,6 @@ const {
  *           type: integer
  *           default: 0
  *         description: 현재 페이지의 커서. 기본값은 0.
- *       - in: query
- *         name: limit
- *         schema:
- *           type: integer
- *           default: 5
- *         description: 한 번에 가져올 데이터 수. 기본값은 5.
  *     responses:
  *       202:
  *         description: 작성된 리뷰 목록 조회 성공

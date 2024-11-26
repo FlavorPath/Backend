@@ -10,11 +10,13 @@ exports.getScraps = async (req, res) => {
 
     // 스크랩 목록 조회
     const sql = `
-      SELECT s.id, r.id AS restaurantId, r.name 
+      SELECT s.id, r.id AS restaurantId, r.name, r.address, JSON_ARRAYAGG(m.photo_url) AS photos
       FROM restaurants r 
       JOIN scraps s ON r.id = s.restaurant_id 
+      LEFT JOIN menus m ON r.id = m.restaurant_id
       WHERE s.user_id = ?
       AND s.id > ? -- 커서로 레스토랑을 제한
+      GROUP BY s.id, r.id, r.name, r.address
       ORDER BY s.id ASC -- 순차적으로 조회
       LIMIT ?;
     `;
@@ -22,9 +24,10 @@ exports.getScraps = async (req, res) => {
     const [restaurants] = await db.query(sql, params);
 
     if (restaurants.length === 0) {
-      return res.status(404).json({
-        success: false,
-        message: "스크랩된 식당을 찾을 수 없습니다.",
+      return res.status(200).json({
+        success: true,
+        data: [],
+        lastCursor: null,
       });
     }
 

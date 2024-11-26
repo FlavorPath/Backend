@@ -20,9 +20,7 @@ exports.getAllReviews = async (req, res) => {
     const [reviews] = await db.query(sql, params);
 
     if (!reviews.length) {
-      return res
-        .status(404)
-        .json({ success: false, message: "작성된 리뷰가 없습니다." });
+      return res.status(404).json({ success: true, lastCursor: null });
     }
 
     const lastCursor = reviews[reviews.length - 1].id;

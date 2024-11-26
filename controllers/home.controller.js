@@ -4,7 +4,8 @@ const db = require("../utils/db");
 exports.getAllMarkers = async (req, res) => {
   try {
     // id, 이름, 카테고리(라벨), 위치{위도: , 경도:}
-    const sql = `SELECT r.id, r.name, JSON_ARRAYAGG(l.name) AS labels, 
+    const sql = `SELECT r.id, r.name, 
+    JSON_ARRAY(GROUP_CONCAT(l.name ORDER BY l.id ASC SEPARATOR ',')) AS labels, 
   JSON_OBJECT('latitude', r.latitude, 'longitude', r.longitude) AS location
   FROM restaurants r
   JOIN restaurant_labels rl ON r.id = rl.restaurant_id

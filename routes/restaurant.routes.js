@@ -122,13 +122,6 @@ router.get("/:id", getRestaurantDetail);
  *           type: integer
  *           default: 0
  *         description: "커서 기반 페이징을 위한 마지막 리뷰 ID (기본값: 0)"
- *       - in: query
- *         name: limit
- *         required: false
- *         schema:
- *           type: integer
- *           default: 5
- *         description: "한 번에 가져올 리뷰의 개수 (기본값: 5)"
  *     responses:
  *       '200':
  *         description: 리뷰 조회 성공

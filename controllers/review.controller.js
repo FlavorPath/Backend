@@ -42,7 +42,9 @@ LIMIT ?;
     const [reviews] = await db.query(sql, params);
 
     if (!reviews.length) {
-      return res.status(404).json({ success: true, lastCursor: null });
+      return res
+        .status(404)
+        .json({ success: true, reviews: [], lastCursor: null });
     }
 
     const lastCursor = reviews[reviews.length - 1].id;

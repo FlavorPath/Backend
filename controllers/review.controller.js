@@ -8,13 +8,35 @@ exports.getAllReviews = async (req, res) => {
     cursor = +cursor;
 
     const sql = `WITH RankedLabels AS (
-  SELECT rl.restaurant_id, l.name,
-  ROW_NUMBER() OVER (PARTITION BY rl.restaurant_id ORDER BY rl.label_id ASC) AS row_num
-  FROM restaurant_labels rl JOIN labels l ON rl.label_id = l.id)
-  SELECT r.id AS id, r.restaurant_id, r.content, r.created_at, rl.name AS label
-  FROM reviews r LEFT JOIN RankedLabels rl ON r.restaurant_id = rl.restaurant_id AND rl.row_num = 1
-  WHERE r.user_id = ? AND r.id > ?
-  ORDER BY r.id ASC LIMIT ?; `;
+  SELECT 
+    rl.restaurant_id, 
+    l.name,
+    ROW_NUMBER() OVER (PARTITION BY rl.restaurant_id ORDER BY rl.label_id ASC) AS row_num
+  FROM 
+    restaurant_labels rl 
+    JOIN labels l ON rl.label_id = l.id
+)
+SELECT 
+  r.id AS id, 
+  r.restaurant_id, 
+  r.content, 
+  r.created_at, 
+  rest.name AS restaurant_name, -- restaurants 테이블에서 가져온 이름
+  rl.name AS label
+FROM 
+  reviews r 
+  LEFT JOIN RankedLabels rl 
+    ON r.restaurant_id = rl.restaurant_id 
+    AND rl.row_num = 1
+  LEFT JOIN restaurants rest 
+    ON r.restaurant_id = rest.id -- restaurants 테이블과 조인
+WHERE 
+  r.user_id = ? 
+  AND r.id > ?
+ORDER BY 
+  r.id ASC 
+LIMIT ?;
+ `;
 
     const params = [userId, cursor, limit];
     const [reviews] = await db.query(sql, params);

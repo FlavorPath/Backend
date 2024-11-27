@@ -8,7 +8,7 @@ const { getScraps, deleteScrap } = require("../controllers/scrap.controller");
  * /scrap:
  *   get:
  *     summary: 스크랩 목록 조회
- *     description: 로그인한 사용자의 스크랩된 식당 목록을 조회합니다.
+ *     description: 로그인한 사용자의 스크랩된 식당 목록을 조회합니다. 각 식당의 라벨과 메뉴 사진 목록도 포함됩니다.
  *     tags:
  *       - Scrap
  *     security:
@@ -18,15 +18,8 @@ const { getScraps, deleteScrap } = require("../controllers/scrap.controller");
  *         name: cursor
  *         schema:
  *           type: integer
+ *           default: 0
  *         description: 이전 요청의 마지막 스크랩 ID (페이징용)
- *         example: 5
- *       - in: query
- *         name: limit
- *         schema:
- *           type: integer
- *           default: 5
- *         description: 반환할 스크랩 개수
- *         example: 10
  *     responses:
  *       200:
  *         description: 스크랩 목록 조회 성공
@@ -52,11 +45,19 @@ const { getScraps, deleteScrap } = require("../controllers/scrap.controller");
  *                       name:
  *                         type: string
  *                         example: "청진옥"
+ *                       address:
+ *                         type: string
+ *                         example: "서울 종로구 청진동 123"
  *                       labels:
  *                         type: array
  *                         items:
  *                           type: string
  *                         example: ["한식", "국밥"]
+ *                       photos:
+ *                         type: array
+ *                         items:
+ *                           type: string
+ *                         example: ["https://example.com/photo1.jpg", "https://example.com/photo2.jpg"]
  *                 cursor:
  *                   type: integer
  *                   example: 10

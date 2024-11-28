@@ -1,0 +1,1 @@
+import{u,a as i}from "./restaurant.query-Co0zp6zW.js";const c= t=>{const{data:a,isLoading:e,error:s}=u(t),{mutate:r,isPending:n}=i();return{restaurantDetail:a,isLoading:e,error:s,mutate:r,isMutating:n}};export{c as u};

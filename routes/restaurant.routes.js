@@ -13,7 +13,7 @@ const authMiddleware = require("../middlewares/authMiddleware");
 
 /**
  * @swagger
- * /api/restaurant/{id}:
+ * /restaurant/{id}:
  *   get:
  *     summary: 식당 상세 조회
  *     description: 특정 식당의 상세 정보를 조회합니다. (라벨, 메뉴, 주소, 영업시간, 전화번호, 스크랩 여부 포함)
@@ -102,7 +102,7 @@ router.get("/:id", getRestaurantDetail);
 
 /**
  * @swagger
- * /api/restaurant/{id}/reviews:
+ * /restaurant/{id}/reviews:
  *   get:
  *     summary: "특정 식당의 리뷰 조회"
  *     description: "특정 식당의 리뷰를 커서 기반 페이징 방식으로 조회합니다."
@@ -198,7 +198,7 @@ router.get("/:id/reviews", getRestaurantReviews);
 
 /**
  * @swagger
- * /api/restaurant/{id}/reviews:
+ * /restaurant/{id}/reviews:
  *   post:
  *     summary: "특정 식당에 리뷰 작성"
  *     description: "특정 식당에 대한 리뷰를 작성합니다."
@@ -282,7 +282,7 @@ router.post("/:id/reviews", authMiddleware, postRestaurantReview);
 
 /**
  * @swagger
- * /api/restaurant/{id}/scrap:
+ * /restaurant/{id}/scrap:
  *   post:
  *     summary: 식당 스크랩 추가/해제
  *     description: 특정 식당을 스크랩하거나, 이미 스크랩된 경우 스크랩을 해제합니다. 인증이 필요합니다.

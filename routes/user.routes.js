@@ -12,7 +12,7 @@ const upload = require('../middlewares/uploadMiddleware');
 
 /**
  * @swagger
- * /api/user/register:
+ * /user/register:
  *   post:
  *     summary: 유저 회원가입
  *     description: 유저 아이디, 비밀번호, 닉네임으로 회원가입을 진행합니다.
@@ -70,7 +70,7 @@ router.post("/register", registerUser);
 
 /**
  * @swagger
- * /api/user/login:
+ * /user/login:
  *   post:
  *     summary: 유저 로그인
  *     description: 유저 아이디와 비밀번호로 로그인을 진행합니다.
@@ -116,7 +116,7 @@ router.post("/login", loginUser);
 
 /**
  * @swagger
- * /api/user/info:
+ * /user/info:
  *   get:
  *     summary: 사용자 정보 조회
  *     description: 로그인한 사용자의 정보를 조회합니다. JWT 토큰을 사용하여 인증된 사용자만 접근할 수 있습니다.
@@ -179,7 +179,7 @@ router.get("/info", authMiddleware, getUserInfo);
 
 /**
  * @swagger
- * /api/user/nickname:
+ * /user/nickname:
  *   put:
  *     summary: 회원 닉네임 변경
  *     tags:
@@ -241,7 +241,7 @@ router.put("/nickname", authMiddleware, changeNickname);
 
 /**
  * @swagger
- * /api/user/profile-icon:
+ * /user/profile-icon:
  *   put:
  *     summary: "유저 프로필 아이콘 수정"
  *     description: "S3에 이미지를 업로드하고 유저의 프로필 아이콘을 수정합니다."

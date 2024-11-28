@@ -29,23 +29,23 @@ const corsOptions = {
 };
 app.use(cors(corsOptions));
 
-// 정적 파일 제공
-const buildPath = path.join(__dirname, "dist"); // React 빌드 폴더 경로
-app.use(express.static(buildPath));
-
-// React 애플리케이션의 라우트를 백엔드에서 처리
-app.get("*", (req, res) => {
-  res.sendFile(path.join(buildPath, "index.html"));
-});
+// // 정적 파일 제공
+// const buildPath = path.join(__dirname, "dist"); // React 빌드 폴더 경로
+// app.use(express.static(buildPath));
+//
+// // React 애플리케이션의 라우트를 백엔드에서 처리
+// app.get("*", (req, res) => {
+//   res.sendFile(path.join(buildPath, "index.html"));
+// });
 
 
 
 app.use(bodyParser.json());
-app.use("/api/user", userRoutes);
-app.use("/api/home", homeRoutes);
-app.use("/api/restaurant", restaurantRoutes);
-app.use("/api/search", searchRoutes);
-app.use("/api/scrap", scrapRouter);
-app.use("/api/user/review", reviewRoutes);
+app.use("/user", userRoutes);
+app.use("/home", homeRoutes);
+app.use("/restaurant", restaurantRoutes);
+app.use("/search", searchRoutes);
+app.use("/scrap", scrapRouter);
+app.use("/user/review", reviewRoutes);
 
 module.exports = app;

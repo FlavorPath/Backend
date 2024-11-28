@@ -46,6 +46,10 @@ const {
  *                         type: integer
  *                         description: 리뷰가 작성된 식당 ID
  *                         example: 3
+ *                       restaurant_name:
+ *                         type: string
+ *                         description: 리뷰가 작성된 식당 이름
+ *                         example: "청진옥"
  *                       content:
  *                         type: string
  *                         description: 리뷰 내용
@@ -74,6 +78,9 @@ const {
  *                 success:
  *                   type: boolean
  *                   example: true
+ *                 reviews:
+ *                   type: array
+ *                   example: []
  *                 lastCursor:
  *                   type: null
  *                   example: null

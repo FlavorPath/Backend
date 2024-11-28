@@ -7,7 +7,7 @@ const {
 
 /**
  * @swagger
- * /home:
+ * /api/home:
  *   get:
  *     summary: 모든 마커 조회
  *     description: 모든 식당의 마커 데이터를 조회합니다. 각 마커에는 id, 이름, 라벨, 위치(위도 및 경도)가 포함됩니다.
@@ -68,7 +68,7 @@ router.get("/", getAllMarkers);
 
 /**
  * @swagger
- * /home/label:
+ * /api/home/label:
  *   get:
  *     summary: 특정 라벨에 해당하는 마커 조회
  *     description: 특정 라벨 이름에 해당하는 식당의 마커 데이터를 조회합니다.

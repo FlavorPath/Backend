@@ -5,7 +5,7 @@ const { getScraps, deleteScrap } = require("../controllers/scrap.controller");
 
 /**
  * @swagger
- * /scrap:
+ * /api/scrap:
  *   get:
  *     summary: 스크랩 목록 조회
  *     description: 로그인한 사용자의 스크랩된 식당 목록을 조회합니다. 각 식당의 라벨과 메뉴 사진 목록도 포함됩니다.
@@ -107,7 +107,7 @@ router.get("/", authMiddleware, getScraps);
 
 /**
  * @swagger
- * /scrap:
+ * /api/scrap:
  *   post:
  *     summary: 스크랩 해제
  *     description: 로그인한 사용자가 특정 식당의 스크랩을 해제합니다.

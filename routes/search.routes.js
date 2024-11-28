@@ -4,7 +4,7 @@ const router = express.Router();
 
 /**
  * @swagger
- * /search:
+ * /api/search:
  *   get:
  *     summary: 식당 검색
  *     description: 검색 기준에 따라 식당을 검색합니다. "name"은 식당 이름으로 검색하며, "label"은 라벨로 검색합니다.

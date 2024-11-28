@@ -29,14 +29,14 @@ const corsOptions = {
 };
 app.use(cors(corsOptions));
 
-// // 정적 파일 제공
-// const buildPath = path.join(__dirname, "dist"); // React 빌드 폴더 경로
-// app.use(express.static(buildPath));
-//
-// // React 애플리케이션의 라우트를 백엔드에서 처리
-// app.get("*", (req, res) => {
-//   res.sendFile(path.join(buildPath, "index.html"));
-// });
+// 정적 파일 제공
+const buildPath = path.join(__dirname, "dist"); // React 빌드 폴더 경로
+app.use(express.static(buildPath));
+
+// React 애플리케이션의 라우트를 백엔드에서 처리
+app.get("*", (req, res) => {
+  res.sendFile(path.join(buildPath, "index.html"));
+});
 
 
 

@@ -23,7 +23,7 @@ console.log("Swagger UI available at http://localhost:1234/api-docs");
 // CORS 설정
 const corsOptions = {
   origin: (origin, callback) => {
-    const allowedOrigins = ["http://localhost:5173", "http://localhost:1234"];
+    const allowedOrigins = ["http://localhost:5173", "http://localhost:1234", 'http://43.202.172.0:1234/'];
     console.log("Origin: ", origin);
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);

@@ -27,6 +27,7 @@ const corsOptions = {
   allowedHeaders: ["Content-Type", "Authorization"], // 허용할 헤더
   credentials: true, // 프론트엔드에서 쿠키, 인증 정보를 사용할 수 있도록 허용
 };
+app.use(cors(corsOptions));
 
 // 정적 파일 제공
 const buildPath = path.join(__dirname, "dist"); // React 빌드 폴더 경로
@@ -37,8 +38,6 @@ app.get("*", (req, res) => {
   res.sendFile(path.join(buildPath, "index.html"));
 });
 
-
-app.use(cors(corsOptions));
 
 
 app.use(bodyParser.json());

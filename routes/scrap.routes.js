@@ -107,7 +107,7 @@ router.get("/", authMiddleware, getScraps);
 
 /**
  * @swagger
- * /scrap:
+ * /api/scrap:
  *   post:
  *     summary: 스크랩 해제
  *     description: 로그인한 사용자가 특정 식당의 스크랩을 해제합니다.

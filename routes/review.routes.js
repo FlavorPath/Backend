@@ -10,7 +10,7 @@ const {
 
 /**
  * @swagger
- * /user/review:
+ * /api/user/review:
  *   get:
  *     summary: 유저가 작성한 모든 리뷰 불러오기
  *     description: 로그인한 사용자가 작성한 모든 리뷰를 커서 기반 페이징 방식으로 조회합니다.
@@ -104,7 +104,7 @@ router.get("/", authMiddleware, getAllReviews);
 
 /**
  * @swagger
- * /user/review/{id}:
+ * /api/user/review/{id}:
  *   get:
  *     summary: 특정 리뷰 불러오기
  *     tags:
@@ -171,7 +171,7 @@ router.get("/:id", authMiddleware, getReview);
 
 /**
  * @swagger
- * /user/review/{id}:
+ * /api/user/review/{id}:
  *   put:
  *     summary: 리뷰 수정하기
  *     tags:
@@ -244,7 +244,7 @@ router.put("/:id", authMiddleware, changeReview);
 
 /**
  * @swagger
- * /user/review/{id}:
+ * /api/user/review/{id}:
  *   delete:
  *     summary: 리뷰 삭제하기
  *     tags:

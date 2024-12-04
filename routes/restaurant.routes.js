@@ -204,6 +204,8 @@ router.get("/:id/reviews", getRestaurantReviews);
  *     description: "특정 식당에 대한 리뷰를 작성합니다."
  *     tags:
  *       - Restaurants
+ *     security:
+ *       - bearerAuth: []  # 인증 필요
  *     parameters:
  *       - name: id
  *         in: path
